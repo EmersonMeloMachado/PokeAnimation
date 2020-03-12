@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PokeAnimation.Components.SearchBarView">
+    <ContentView.Content>
+        <Grid HeightRequest="{StaticResource buttonSize}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource buttonSize}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ContentView Padding="{StaticResource buttonPadding}"
+                     Grid.Column="0"
+                     WidthRequest="{StaticResource buttonSize}">
+                <ContentView.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </ContentView.GestureRecognizers>
+                <Image x:Name="search"
+                   HeightRequest="{StaticResource buttonImageSize}"
+                   WidthRequest="{StaticResource buttonImageSize}"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="Start"
+                   BackgroundColor="{StaticResource principalColor}"
+                   Source="search_white.png" />
+            </ContentView>
+            <BoxView BackgroundColor="Black"
+                 Margin="0,10,5,10"
+                 Grid.Column="1" />
+            <BoxView BackgroundColor="White"
+                 Margin="2,12,7,12"
+                 Grid.Column="1" />
+            <Entry Grid.Column="1"
+               Opacity="0"
+               Margin="0,0,5,0"
+               x:Name="pesquisaEntry"
+               PlaceholderColor="{StaticResource textColor}"
+               Placeholder="Digite o nome..."
+               HorizontalTextAlignment="Center"
+
+               FontSize="{StaticResource fontSmall}"
+               TextColor="{StaticResource titleColor}" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

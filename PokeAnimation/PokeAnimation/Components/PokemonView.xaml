@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:bv="clr-namespace:PokeAnimation.Behaviors"
+             mc:Ignorable="d"
+             x:Name="pokemonView"
+             x:Class="PokeAnimation.Components.PokemonView">
+    <ContentView.Behaviors>
+        <bv:ObservablePropertyBehavior PropertyName="Height"
+                                       MaxValue="400"
+                                       MinValue="{StaticResource listViewRowHeightDouble}"
+                                       ObservablePropertyChanged="ObservablePropertyBehavior_ObservablePropertyChanged" />
+    </ContentView.Behaviors>
+    <ContentView.Content>
+        <StackLayout BackgroundColor="White" Padding="0" Margin="0" Spacing="0">
+            <ContentView x:Name="fechaMonsterView"  Padding="0" Margin="0"
+                                 HorizontalOptions="Center"
+                                 HeightRequest="0"
+                                 Opacity="0">
+                <ContentView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_3" />
+                </ContentView.GestureRecognizers>
+                <Image  HeightRequest="{StaticResource buttonImageSize}"
+                                Source="arrow.png"
+                                WidthRequest="{StaticResource buttonImageSize}" />
+            </ContentView>
+            <ContentView x:Name="colapsed"
+                         HeightRequest="70"
+                         Padding="0">
+                <Grid Padding="{StaticResource listViewRowPadding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ff:CachedImage TransformPlaceholders="True"
+                                    x:Name="image"
+									Source="{Binding ImagePath}"
+									LoadingPlaceholder="pokeball.png"
+									Aspect="AspectFill"
+									CacheType="Memory"
+									HeightRequest="{StaticResource listViewImageSize}"
+									WidthRequest="{StaticResource listViewImageSize}"
+									Grid.Column="0"
+									Grid.Row="0"
+									Grid.RowSpan="2" />
+                    <Label Text="{Binding Name}"
+                           x:Name="colapsedName"
+						Grid.Column="1"
+						Grid.Row="0"
+						Style="{StaticResource cellTitle}" />
+
+                    <Label Text="{Binding Id, StringFormat='#{0}'}"
+                           x:Name="colapsedId"
+						    Grid.Column="1"
+						    Grid.Row="1"
+						    Style="{StaticResource cellText}" />
+                </Grid>
+            </ContentView>
+            <ContentView x:Name="expanded"
+                         HeightRequest="400"
+                         Padding="0">
+                <Grid Padding="{StaticResource listViewRowPadding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <d:CarouselView Grid.Column="0"
+									 Grid.Row="0"
+                                     Position="1"
+
+                                     ItemsSource="{Binding Itens, Source={x:Reference pokemonView}}">
+                        <d:CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView WidthRequest="{StaticResource screenDensityWidth}">
+                                    <ff:CachedImage TransformPlaceholders="True"
+									Source="{Binding imagePath}"
+									LoadingPlaceholder="pokeball.png"
+									Aspect="AspectFit"
+									CacheType="Memory"
+									HeightRequest="300"
+									WidthRequest="300" />
+                                </ContentView>
+                            </DataTemplate>
+                        </d:CarouselView.ItemTemplate>
+                    </d:CarouselView>
+
+                    <Label Text="{Binding Id, StringFormat='#{0}'}"
+				           x:Name="expandedId"
+                           Grid.Column="0"
+				           Grid.Row="1"
+				           Style="{StaticResource cellText}" />
+                    <Label Text="{Binding Name}"
+                           x:Name="expandedName"
+						   Grid.Column="0"
+						   Grid.Row="2"
+						   Style="{StaticResource cellTitle}" />
+                </Grid>
+            </ContentView>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

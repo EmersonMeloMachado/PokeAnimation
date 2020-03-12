@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:bv="clr-namespace:PokeAnimation.Behaviors"
+             xmlns:co="clr-namespace:PokeAnimation.Components"
+             mc:Ignorable="d"
+             x:Class="PokeAnimation.Components.HeaderPokedex"
+             HeightRequest="{StaticResource headerExpandedHeight}"
+             x:Name="header"
+             BackgroundColor="{StaticResource principalColor}"
+             AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+             AbsoluteLayout.LayoutBounds="0,0,1,-1"
+             Padding="0"
+             Margin="0">
+    <ContentView.Behaviors>
+        <bv:AnchorBehavior AnchorTo="{Binding ScrollYPosition, Source={x:Reference header}}"
+                           PropertyNameToAnchor="HeightRequest"
+                           ProportionalValueAnchorTo="-1"
+                           InitialValue="{StaticResource headerExpandedHeight}"
+                           MaxValue="{StaticResource headerExpandedHeight}"
+                           MinValue="{StaticResource headerHeight}" />
+        <bv:ObservablePropertyBehavior PropertyName="Height"
+                                       MaxValue="{StaticResource headerExpandedHeight}"
+                                       MinValue="{StaticResource headerHeight}"
+                                       ObservablePropertyChanged="ObservablePropertyBehaviorCollapse_ObservablePropertyChanged" />
+        <bv:ObservablePropertyBehavior PropertyName="Height"
+                                       MaxValue="{StaticResource screenDensityHeight}"
+                                       MinValue="{StaticResource headerExpandedHeight}"
+                                       ObservablePropertyChanged="ObservablePropertyBehaviorExpand_ObservablePropertyChanged" />
+    </ContentView.Behaviors>
+
+    <AbsoluteLayout>
+        <Label x:Name="headerSubTitulo"
+
+               FontSize="{StaticResource fontSmall}"
+               TextColor="{StaticResource titleBarColor}"
+               Text="região"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5, 0.3"
+               VerticalOptions="EndAndExpand"
+               VerticalTextAlignment="End"
+               HorizontalOptions="CenterAndExpand"
+               HorizontalTextAlignment="Center">
+        </Label>
+        <Label x:Name="headerTitulo"
+
+               FontSize="{StaticResource fontBig}"
+               TextColor="{StaticResource titleBarColor}"
+               Text="KANTO"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.6"
+               VerticalOptions="StartAndExpand"
+               VerticalTextAlignment="Start"
+               HorizontalOptions="CenterAndExpand"
+               HorizontalTextAlignment="Center">
+        </Label>
+        <ContentView x:Name="headerButtonArea"
+                     AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+                     AbsoluteLayout.LayoutBounds="0.5, 1, 1, -1"
+                     Padding="{StaticResource buttonPadding}">
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Handle_Tapped" />
+                <PanGestureRecognizer PanUpdated="Handle_PanUpdated" TouchPoints="1" />
+            </ContentView.GestureRecognizers>
+            <Image x:Name="arrowButton"
+                    Source="arrow_white.png"
+                    HeightRequest="{StaticResource buttonImageSize}"
+                    WidthRequest="{StaticResource buttonImageSize}">
+            </Image>
+        </ContentView>
+
+        <co:SelectRegionView x:Name="selectRegionView"
+                             AbsoluteLayout.LayoutFlags="All"
+                             AbsoluteLayout.LayoutBounds="0,0,1,1"
+                             IsVisible="True"
+                             Opacity="0">
+            <co:SelectRegionView.Margin>
+                <Thickness Bottom="{StaticResource buttonSize}"
+                           Top="{StaticResource buttonSize}">
+                </Thickness>
+            </co:SelectRegionView.Margin>
+        </co:SelectRegionView>
+
+        <ContentView AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+                     AbsoluteLayout.LayoutBounds="0,1,1,-1"
+                     BackgroundColor="Transparent" HeightRequest="{StaticResource buttonSize}">
+            <ContentView.GestureRecognizers>
+                <ClickGestureRecognizer Clicked="Handle_Tapped" />
+                <TapGestureRecognizer Tapped="Handle_Tapped" />
+                <PanGestureRecognizer PanUpdated="Handle_PanUpdated" TouchPoints="1" />
+            </ContentView.GestureRecognizers>
+        </ContentView>
+    </AbsoluteLayout>
+</ContentView>

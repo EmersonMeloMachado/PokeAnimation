@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="PokeAnimation.Components.MonsterCellView">
+    <ContentView.Content>
+        <Grid Padding="{StaticResource listViewRowPadding}"
+          BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ff:CachedImage TransformPlaceholders="True"
+						Source="{Binding ImagePath}"
+						LoadingPlaceholder="pokeball.png"
+						Aspect="AspectFill"
+						CacheType="Memory"
+						HeightRequest="{StaticResource listViewImageSize}"
+						WidthRequest="{StaticResource listViewImageSize}"
+						Grid.Column="0"
+						Grid.Row="0"
+						Grid.RowSpan="2" />
+            <Label Text="{Binding Name}"
+			   Grid.Column="1"
+			   Grid.Row="0"
+			   Style="{StaticResource cellTitle}" />
+
+            <Label Text="{Binding Id, StringFormat='#{0}'}"
+			   Grid.Column="1"
+			   Grid.Row="1"
+			   Style="{StaticResource cellText}" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

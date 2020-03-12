@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:PokeAnimation.CustomControls"
+             mc:Ignorable="d"
+             x:Class="PokeAnimation.Components.SelectRegionView">
+    <ContentView.Content>
+        <AbsoluteLayout>
+            <c:CustomListView AbsoluteLayout.LayoutFlags="All"
+                          AbsoluteLayout.LayoutBounds="0,0,1,1"
+                          SeparatorVisibility="None"
+                          RowHeight="{StaticResource listViewRowHeight}"
+                          ItemsSource="{Binding Regions}"
+                          BackgroundColor="Transparent">
+                <c:CustomListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label
+                               FontSize="{StaticResource fontMedium}"
+                               TextColor="{StaticResource titleBarColor}"
+                               Text="{Binding Name}"
+                               VerticalOptions="CenterAndExpand"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               HorizontalTextAlignment="Center" />
+                        </ViewCell>
+                    </DataTemplate>
+                </c:CustomListView.ItemTemplate>
+            </c:CustomListView>
+            <c:CustomGradientContentView AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+                                     AbsoluteLayout.LayoutBounds="0,0,1,-1"
+                                     HeightRequest="{Binding Source={StaticResource screenDensityHeight }, Converter={StaticResource divideByConvertParameterConverter}, ConverterParameter=4}"
+                                     StartColor="{StaticResource principalColor}"
+                                     EndColor="Transparent"
+                                     BackgroundColor="Transparent"
+                                     Orientation="Vertical" />
+            <c:CustomGradientContentView AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+                                     AbsoluteLayout.LayoutBounds="0,1,1,-1"
+                                     HeightRequest="{Binding Source={StaticResource screenDensityHeight}, Converter={StaticResource divideByConvertParameterConverter}, ConverterParameter=4}"
+                                     EndColor="{StaticResource principalColor}"
+                                     StartColor="Transparent"
+                                     BackgroundColor="Transparent"
+                                     Orientation="Vertical" />
+        </AbsoluteLayout>
+    </ContentView.Content>
+</ContentView>

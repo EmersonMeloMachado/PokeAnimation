@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:PokeAnimation.CustomControls"
+             xmlns:co="clr-namespace:PokeAnimation.Components"
+             xmlns:bv="clr-namespace:PokeAnimation.Behaviors"
+             xmlns:me="clr-namespace:PokeAnimation.MarkupExtension"
+             xmlns:vw="clr-namespace:PokeAnimation.ViewModel"
+             xmlns:poke="clr-namespace:PokeAnimation"
+             mc:Ignorable="d"
+             x:Class="PokeAnimation.View.PokedexPage"
+             Appearing="ContentPage_Appearing"
+             BindingContext="{me:IOCResource TypeInstance={x:Type vw:MontersListAllResumeViewModel}}"
+             BackgroundColor="{StaticResource backgroundColor}">
+
+    <ContentPage.Content>
+        <AbsoluteLayout x:Name="main">
+            <AbsoluteLayout x:Name="monsterListaAllResumeView"
+					 	 AbsoluteLayout.LayoutFlags="All"
+						 AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+                <c:CustomListView x:Name="monsterResumeListView"
+								ItemsSource="{Binding MonstersResume}"
+								  AbsoluteLayout.LayoutBounds="0,0,1,1"
+								  AbsoluteLayout.LayoutFlags="All"
+                                  SeparatorVisibility="None"
+                                  ItemSelected="monsterResumeListView_ItemSelected"
+								  RowHeight="{StaticResource listViewRowHeight}">
+                    <c:CustomListView.Header>
+                        <ContentView HeightRequest="200" />
+                    </c:CustomListView.Header>
+                    <c:CustomListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <co:MonsterCellView BindingContext="{Binding .}">
+                                    <co:MonsterCellView.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2" />
+                                    </co:MonsterCellView.GestureRecognizers>
+                                </co:MonsterCellView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </c:CustomListView.ItemTemplate>
+                </c:CustomListView>
+                <!--<ContentView AbsoluteLayout.LayoutFlags="PositionProportional"
+                             AbsoluteLayout.LayoutBounds="1,1,100,100"
+                             Margin="20"
+                             BackgroundColor="Blue">
+                </ContentView>-->
+                <ContentView x:Name="shadowListView"
+                             AbsoluteLayout.LayoutFlags="All"
+                             AbsoluteLayout.LayoutBounds="0,0,1,1"
+                             BackgroundColor="Black" />
+
+                <co:HeaderPokedex ScrollYPosition="{Binding ScrollYPosition, Source={x:Reference monsterResumeListView}}">
+                    <co:HeaderPokedex.Behaviors>
+                        <bv:ObservablePropertyBehavior PropertyName="Height"
+                                                       MinValue="{StaticResource headerExpandedHeight}"
+                                                       MaxValue="{StaticResource screenDensityHeight}"
+                                                       ObservablePropertyChanged="HeaderPokedex_ObservablePropertyChanged" />
+                    </co:HeaderPokedex.Behaviors>
+                </co:HeaderPokedex>
+            </AbsoluteLayout>
+
+            <ContentView x:Name="sombra"
+                         BackgroundColor="Black"
+                         Opacity="0"
+                         IsVisible="False"
+                         AbsoluteLayout.LayoutFlags="All"
+                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" />
+
+            <co:PokemonView x:Name="monsterView"
+                            Padding="{StaticResource listViewRowPadding}"
+                            AbsoluteLayout.LayoutFlags="All"
+                            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                            BindingContext="{Binding MontersListAllResumeViewModel, Source={x:Static poke:App.Current}}"
+                            TranslationY="5000">
+            </co:PokemonView>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

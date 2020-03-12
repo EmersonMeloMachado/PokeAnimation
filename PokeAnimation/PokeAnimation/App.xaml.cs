@@ -1,35 +1,83 @@
-﻿using Prism;
-using Prism.Ioc;
-using PokeAnimation.ViewModels;
-using PokeAnimation.Views;
+﻿using Ninject;
+using PokeAnimation.Sevices;
+using PokeAnimation.Sevices.Interface;
+using PokeAnimation.View;
+using PokeAnimation.ViewModel;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PokeAnimation
 {
-    public partial class App
+    internal class IOC : Ninject.Modules.NinjectModule
     {
-        /* 
-         * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
-         * This imposes a limitation in which the App class must have a default constructor. 
-         * App(IPlatformInitializer initializer = null) cannot be handled by the Activator.
-         */
-        public App() : this(null) { }
+        #region Methods
 
-        public App(IPlatformInitializer initializer) : base(initializer) { }
+        public override void Load()
+        {
+            this.Bind<IPokeApi>().To<PokeApi>();
+            this.Bind<PokemonViewModel>().To<PokemonViewModel>();
+            this.Bind<PokedexViewModel>().To<PokedexViewModel>();
+            this.Bind<MontersListAllResumeViewModel>().To<MontersListAllResumeViewModel>();
+        }
 
-        protected override async void OnInitialized()
+        #endregion Methods
+    }
+
+    public partial class App : Application
+    {
+        #region Properties
+
+        public static IKernel Container { get; set; }
+
+        public new static App Current
+        {
+            get
+            {
+                return (App)Application.Current;
+            }
+        }
+
+        public PokemonViewModel PokemonViewModel { get; private set; } = new PokemonViewModel();
+
+        #endregion Properties
+
+        #region Constructors
+
+        public App()
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            this.Resources["screenDensity"] = DeviceDisplay.MainDisplayInfo.Density;
+            this.Resources["screenDensityHeight"] = (DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density) - new OnPlatform<double> { Android = 20 };
+            this.Resources["screenDensityWidth"] = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+            this.Resources["screenDensityWidthMinusButtonSize"] = (double)this.Resources["screenDensityWidth"] - (double)this.Resources["buttonSize"];
+
+            App.Container = new Ninject.StandardKernel(new IOC());
+
+            MainPage = new PokedexPage();
         }
 
-        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        #endregion Constructors
+
+        #region Methods
+
+        protected override void OnResume()
         {
-            containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         }
+
+        protected override void OnSleep()
+        {
+        }
+
+        protected override void OnStart()
+        {
+        }
+
+        public T GetResource<T>(string name)
+        {
+            return (T)this.Resources[name];
+        }
+
+        #endregion Methods
     }
 }
