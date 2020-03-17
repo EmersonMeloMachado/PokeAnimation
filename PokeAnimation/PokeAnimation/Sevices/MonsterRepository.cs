@@ -28,14 +28,14 @@ namespace PokeAnimation.Sevices
             //var
 
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MonsterRepository)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.pokedex_{regionId}.json");
+            Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.Sevices.pokedex_{regionId}.json");
             string json = "";
-            using (var reader = new System.IO.StreamReader(stream))
+            using(var reader = new System.IO.StreamReader(stream))
             {
                 json = await reader.ReadToEndAsync();
             }
 
-            if (!string.IsNullOrEmpty(json))
+            if(!string.IsNullOrEmpty(json))
             {
                 pokedex = Newtonsoft.Json.JsonConvert.DeserializeObject<Pokedex>(json);
             }

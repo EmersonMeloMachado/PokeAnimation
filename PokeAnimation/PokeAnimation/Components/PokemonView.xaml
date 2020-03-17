@@ -65,32 +65,42 @@
             </ContentView>
             <ContentView x:Name="expanded"
                          HeightRequest="400"
-                         Padding="0">
+                         Padding="0"
+                         IsVisible="True">
                 <Grid Padding="{StaticResource listViewRowPadding}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <d:CarouselView Grid.Column="0"
-									 Grid.Row="0"
-                                     Position="1"
 
-                                     ItemsSource="{Binding Itens, Source={x:Reference pokemonView}}">
-                        <d:CarouselView.ItemTemplate>
-                            <DataTemplate>
-                                <ContentView WidthRequest="{StaticResource screenDensityWidth}">
-                                    <ff:CachedImage TransformPlaceholders="True"
-									Source="{Binding imagePath}"
+                    <ff:CachedImage Grid.Column="0"
+									Grid.Row="0"
+                                    VerticalOptions="Start"
+                                    TransformPlaceholders="True"
+									Source="{Binding ImagePath}"
 									LoadingPlaceholder="pokeball.png"
 									Aspect="AspectFit"
 									CacheType="Memory"
 									HeightRequest="300"
 									WidthRequest="300" />
-                                </ContentView>
+                    <!--<CollectionView Grid.Column="0"
+									Grid.Row="0"
+                                    VerticalOptions="Start"
+                                    ItemsSource="{Binding Itens, Source={x:Reference pokemonView}}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ff:CachedImage
+                                    TransformPlaceholders="True"
+									Source="{Binding ImagePath}"
+									LoadingPlaceholder="pokeball.png"
+									Aspect="AspectFit"
+									CacheType="Memory"
+									HeightRequest="300"
+									WidthRequest="300" />
                             </DataTemplate>
-                        </d:CarouselView.ItemTemplate>
-                    </d:CarouselView>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>-->
 
                     <Label Text="{Binding Id, StringFormat='#{0}'}"
 				           x:Name="expandedId"

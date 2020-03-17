@@ -56,9 +56,9 @@ namespace PokeAnimation.Components
             this.expanded.IsVisible = false;
             this.colapsed.IsVisible = true;
             this._onClosing?.Invoke();
-            this.fechaMonsterView.FadeTo(0, 100, Easing.SinOut);
-            this.expandedId.FadeTo(0, 100, Easing.SinOut);
-            this.expandedName.FadeTo(0, 100, Easing.SinOut);
+            await this.fechaMonsterView.FadeTo(0, 100, Easing.SinOut);
+            await this.expandedId.FadeTo(0, 100, Easing.SinOut);
+            await this.expandedName.FadeTo(0, 100, Easing.SinOut);
             await this.fechaMonsterView.FadeTo(0, 100, Easing.SinOut);
             var an = new Animation(
                 v =>
@@ -72,7 +72,7 @@ namespace PokeAnimation.Components
                 }, 1, 0, Easing.SinOut);
             an.Commit(this, "teste", length: 300, finished: async (d, b) =>
             {
-                this.colapsedId.FadeTo(1, 100, Easing.SinOut);
+                await this.colapsedId.FadeTo(1, 100, Easing.SinOut);
                 await this.colapsedName.FadeTo(1, 100, Easing.SinOut);
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -91,7 +91,7 @@ namespace PokeAnimation.Components
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(0, recInit.Y, 1, recInit.Height));
             this.TranslationY = 0;
             this.colapsedId.FadeTo(0, 100, Easing.SinOut);
-            await this.colapsedName.FadeTo(0, 100, Easing.SinOut);
+            this.colapsedName.FadeTo(0, 100, Easing.SinOut);
             var an = new Animation(
                 v =>
                 {
@@ -102,7 +102,7 @@ namespace PokeAnimation.Components
                     this.image.TranslationX = (180 - 40) * v;
                     this.image.TranslationY = (150 - 30) * v;
                 }, 0, 1, Easing.SinOut);
-            an.Commit(this, "teste", length: 300, finished: async (d, b) =>
+            an.Commit(this, "teste", length: 100, finished: async (d, b) =>
             {
                 this.colapsed.IsVisible = false;
                 this.expanded.IsVisible = true;

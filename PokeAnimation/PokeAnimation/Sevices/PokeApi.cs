@@ -5,9 +5,8 @@ using PokeAnimation.Sevices.Interface;
 using PokeAPI;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -30,27 +29,7 @@ namespace PokeAnimation.Sevices
         public async Task<IEnumerable<MonsterResume>> MonsterListAllResumePerRegion(int regionId)
         {
             Pokedex pokedex = null;
-            //var
-
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MonsterRepository)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.pokedex_{regionId}.json");
-            string json = "";
-            if (stream != null)
-            {
-                using (var reader = new System.IO.StreamReader(stream))
-                {
-                    json = await reader.ReadToEndAsync();
-                }
-            }
-
-            if (!string.IsNullOrEmpty(json))
-            {
-                pokedex = Newtonsoft.Json.JsonConvert.DeserializeObject<Pokedex>(json);
-            }
-            else
-            {
-                pokedex = await DataFetcher.GetApiObject<Pokedex>(regionId);
-            }
+            pokedex = await DataFetcher.GetApiObject<Pokedex>(regionId);
 
             return pokedex.Entries.Select(x => new MonsterResume
             {
@@ -62,7 +41,7 @@ namespace PokeAnimation.Sevices
 
         public async Task<PokemonList> ObterListaPokemons(int offset = 0, int limit = 20)
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if(Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
 
             try
             {
@@ -75,12 +54,12 @@ namespace PokeAnimation.Sevices
 
                 return response;
             }
-            catch (FlurlHttpException ex)
+            catch(FlurlHttpException ex)
             {
                 var msg = await ex.GetResponseStringAsync();
                 throw new Exception(msg);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -88,7 +67,7 @@ namespace PokeAnimation.Sevices
 
         public async Task<Model.Pokemon> ObterPokemon(string endpoint)
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if(Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
 
             try
             {
@@ -97,7 +76,7 @@ namespace PokeAnimation.Sevices
                     .AllowAnyHttpStatus()
                     .GetAsync();
 
-                if (response.IsSuccessStatusCode)
+                if(response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var pokemon = JsonConvert.DeserializeObject<Model.Pokemon>(content);
@@ -105,12 +84,12 @@ namespace PokeAnimation.Sevices
                 }
                 return null;
             }
-            catch (FlurlHttpException ex)
+            catch(FlurlHttpException ex)
             {
                 var msg = await ex.GetResponseStringAsync();
                 throw new Exception(msg);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -118,7 +97,7 @@ namespace PokeAnimation.Sevices
 
         public async Task<Model.PokemonType> ObterTiposPokemons()
         {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
+            if(Connectivity.NetworkAccess != NetworkAccess.Internet) return null;
 
             try
             {
@@ -127,7 +106,7 @@ namespace PokeAnimation.Sevices
                     .AllowAnyHttpStatus()
                     .GetAsync();
 
-                if (response.IsSuccessStatusCode)
+                if(response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var pokemon = JsonConvert.DeserializeObject<Model.PokemonType>(content);
@@ -135,12 +114,12 @@ namespace PokeAnimation.Sevices
                 }
                 return null;
             }
-            catch (FlurlHttpException ex)
+            catch(FlurlHttpException ex)
             {
                 var msg = await ex.GetResponseStringAsync();
                 throw new Exception(msg);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -148,23 +127,23 @@ namespace PokeAnimation.Sevices
 
         public async Task<IEnumerable<Model.Region>> RegionListAll()
         {
-            var regions = new List<Model.Region>();
-            //var
-
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MonsterRepository)).Assembly;
-            var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.pokedex.json");
-            string json = "";
-            if (stream != null)
+            return new ObservableCollection<Model.Region>()
             {
-                using (var reader = new System.IO.StreamReader(stream))
-                {
-                    json = await reader.ReadToEndAsync();
-                }
-            }
-
-            regions = JsonConvert.DeserializeObject<List<Model.Region>>(json);
-
-            return regions;
+                new Model.Region {Id = 1,Name =  "national"},
+                new Model.Region {Id = 2,Name =  "kanto"},
+                new Model.Region {Id = 3,Name =  "original-johto"},
+                new Model.Region {Id = 4,Name =  "hoenn"},
+                new Model.Region {Id = 5,Name =  "original-sinnoh"},
+                new Model.Region {Id = 6,Name =  "extended-sinnoh"},
+                new Model.Region {Id = 7,Name =  "updated-johto"},
+                new Model.Region {Id = 8,Name =  "original-unova"},
+                new Model.Region {Id = 9,Name =  "updated-unova"},
+                new Model.Region {Id = 10,Name =  "conquest-gallery"},
+                new Model.Region {Id = 11,Name =  "kalos-central"},
+                new Model.Region {Id = 12,Name =  "kalos-coastal"},
+                new Model.Region {Id = 13,Name =  "kalos-mountain"},
+                new Model.Region {Id = 14,Name =  "updated-hoenn"}
+            };
         }
 
         #endregion Methods

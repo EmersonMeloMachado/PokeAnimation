@@ -21,8 +21,29 @@
 					 	 AbsoluteLayout.LayoutFlags="All"
 						 AbsoluteLayout.LayoutBounds="0,0,1,1">
 
+                <StackLayout BackgroundColor="White"
+                             AbsoluteLayout.LayoutBounds="0,0,1,1"
+							 AbsoluteLayout.LayoutFlags="All"
+                             IsVisible="{Binding IsBusyCarregando}">
+                    <ActivityIndicator
+                            Margin="0,350,0,0"
+                            HeightRequest="{OnPlatform Android=20,iOS=48}"
+                            IsRunning="{Binding IsBusyCarregando}"
+                            IsVisible="{Binding IsBusyCarregando}"
+                            WidthRequest="{OnPlatform Android=20,iOS=48}"
+                            Color="#E94690" />
+
+                    <Label Margin="0,0,0,20"
+                            FontSize="Small"
+                            HorizontalTextAlignment="Center"
+                            IsVisible="{Binding IsBusyCarregando}"
+                            Text="Buscando..."
+                            TextColor="Black" />
+                </StackLayout>
+
                 <c:CustomListView x:Name="monsterResumeListView"
-								ItemsSource="{Binding MonstersResume}"
+                                  IsVisible="{Binding IsBusyPreenchido}"
+								  ItemsSource="{Binding MonstersResume}"
 								  AbsoluteLayout.LayoutBounds="0,0,1,1"
 								  AbsoluteLayout.LayoutFlags="All"
                                   SeparatorVisibility="None"
@@ -36,18 +57,13 @@
                             <ViewCell>
                                 <co:MonsterCellView BindingContext="{Binding .}">
                                     <co:MonsterCellView.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2" />
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer" />
                                     </co:MonsterCellView.GestureRecognizers>
                                 </co:MonsterCellView>
                             </ViewCell>
                         </DataTemplate>
                     </c:CustomListView.ItemTemplate>
                 </c:CustomListView>
-                <!--<ContentView AbsoluteLayout.LayoutFlags="PositionProportional"
-                             AbsoluteLayout.LayoutBounds="1,1,100,100"
-                             Margin="20"
-                             BackgroundColor="Blue">
-                </ContentView>-->
                 <ContentView x:Name="shadowListView"
                              AbsoluteLayout.LayoutFlags="All"
                              AbsoluteLayout.LayoutBounds="0,0,1,1"

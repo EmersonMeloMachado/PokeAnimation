@@ -15,12 +15,7 @@ namespace PokeAnimation.View
     {
         #region Fields
 
-        private double buttonSize = (double)App.Current.Resources["buttonSize"];
-        private double density = (double)App.Current.Resources["screenDensity"];
         private double position;
-        private double screenHeight = (double)App.Current.Resources["screenDensityHeight"];
-        private double screenWidth = (double)App.Current.Resources["screenDensityWidth"];
-        private double tamanhoHeader;
         private MontersListAllResumeViewModel vw;
 
         #endregion Fields
@@ -45,7 +40,7 @@ namespace PokeAnimation.View
 
         private void HeaderPokedex_ObservablePropertyChanged(object sender, Behaviors.ObservableBehaviorEventArgs e)
         {
-            if (e.Proportion == 0)
+            if(e.Proportion == 0)
             {
                 this.monsterResumeListView.Scale = 1;
                 this.monsterResumeListView.TranslationY = 0;
@@ -69,12 +64,7 @@ namespace PokeAnimation.View
             listView.SelectedItem = null;
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            var view = (ContentView)sender;
-        }
-
-        private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
+        private async void TapGestureRecognizer(object sender, EventArgs e)
         {
             var view = (Xamarin.Forms.View)sender;
             var monsterResume = (MonsterResume)view.BindingContext;

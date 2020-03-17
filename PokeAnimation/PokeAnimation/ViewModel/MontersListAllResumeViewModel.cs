@@ -14,6 +14,8 @@ namespace PokeAnimation.ViewModel
         #region Fields
 
         private readonly IPokeApi _repositoryService;
+        private bool _isBusyCarregando;
+        private bool _isBusyPreenchido;
         private ObservableCollection<MonsterResume> _monstersResume;
         private ObservableCollection<Model.Region> _regions;
         private int offSetFinal = 0;
@@ -25,6 +27,18 @@ namespace PokeAnimation.ViewModel
         #endregion Fields
 
         #region Properties
+
+        public bool IsBusyCarregando
+        {
+            get { return _isBusyCarregando; }
+            set { SetProperty(ref _isBusyCarregando, value); }
+        }
+
+        public bool IsBusyPreenchido
+        {
+            get { return _isBusyPreenchido; }
+            set { SetProperty(ref _isBusyPreenchido, value); }
+        }
 
         public ICommand LoadCommand { get; set; }
 
@@ -84,51 +98,36 @@ namespace PokeAnimation.ViewModel
         {
             try
             {
-                //IsBusy = true;
+                IsBusyCarregando = true;
+                IsBusyPreenchido = false;
                 //MockSkeleton();
                 this.Regions.Clear();
                 var listaRegiao = await this._repositoryService.RegionListAll();
-                if (listaRegiao != null)
+                if(listaRegiao != null)
                 {
-                    foreach (var i in listaRegiao)
+                    foreach(var i in listaRegiao)
                     {
                         this.Regions.Add(i);
                     }
                 }
 
                 this.MonstersResume.Clear();
-                foreach (var i in (await this._repositoryService.MonsterListAllResumePerRegion(2)))
+                foreach(var i in (await this._repositoryService.MonsterListAllResumePerRegion(2)))
                 {
                     this.MonstersResume.Add(i);
                 }
 
-                //var items = new List<Pokemon>();
-                //PokemonList = await _repositoryService.ObterListaPokemons(OffSetInicial, OffSetFinal);
-
-                //if (PokemonList != null)
-                //{
-                //    foreach (var poke in PokemonList.results)
-                //    {
-                //        var pokemon = await _repositoryService.ObterPokemon(poke.url);
-                //        if (pokemon != null)
-                //            items.Add(pokemon);
-                //    }
-
-                //    MonstersResume.Clear();
-                //    MonstersResume.AddRange(items);
-                //    OffSetFinal += 20;
-                //}
-
-                //IsBusy = false;
+                IsBusyCarregando = false;
+                IsBusyPreenchido = true;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                //await _pageDialogService.DisplayAlertAsync("PokeApp", ex.Message, "OK");
+                Console.WriteLine(ex.Message);
             }
             finally
             {
-                //IsBusyTypes = false;
-                //IsRefreshing = false;
+                IsBusyCarregando = false;
+                IsBusyPreenchido = true;
             }
         }
 
